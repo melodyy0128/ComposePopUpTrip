@@ -7,12 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.bignerdranch.android.composepopuptrip.ui.screens.home.HomeScreen
+import com.bignerdranch.android.composepopuptrip.ui.screens.home.HomeViewModel
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.LoginScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.PasswordResetScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.SignUpScreen
 
 @Composable
-fun NavigationGraph() {
+fun NavigationGraph(homeViewModel: HomeViewModel) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login") {
@@ -21,12 +22,8 @@ fun NavigationGraph() {
             LoginScreen(navController = navController)
         }
 
-        composable(
-            route = "home/{email}",
-            arguments = listOf(navArgument("email") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val email = backStackEntry.arguments?.getString("email") ?: "Unknown"
-            HomeScreen(userEmail = email)
+        composable("home") {
+            HomeScreen(homeViewModel = homeViewModel)
         }
 
         composable("signup") {

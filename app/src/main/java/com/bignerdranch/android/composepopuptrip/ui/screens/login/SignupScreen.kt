@@ -19,6 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.bignerdranch.android.composepopuptrip.ui.components.LoginButton
+import com.bignerdranch.android.composepopuptrip.ui.components.LoginTitle
+import com.bignerdranch.android.composepopuptrip.ui.components.PasswordInput
+import com.bignerdranch.android.composepopuptrip.ui.components.PopupDialog
+import com.bignerdranch.android.composepopuptrip.ui.components.TextInput
 
 @Preview(showBackground = true)
 @Composable
