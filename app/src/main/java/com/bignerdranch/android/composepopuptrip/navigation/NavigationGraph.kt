@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.bignerdranch.android.composepopuptrip.ui.screens.home.HomeScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.LoginScreen
+import com.bignerdranch.android.composepopuptrip.ui.screens.login.SignUpScreen
 
 @Composable
 fun NavigationGraph() {
@@ -27,6 +28,10 @@ fun NavigationGraph() {
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: "Unknown"
             HomeScreen(userEmail = email)
+        }
+
+        composable("signup") {
+            SignUpScreen(navController = navController)
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.bignerdranch.android.composepopuptrip.ui.screens.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Visibility
@@ -10,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -30,35 +34,40 @@ fun LoginImage() {
 }
 
 @Composable
-fun LoginTitle() {
+fun LoginTitle(titleText: String = "Sign In") {
     Text(
-        text = "Sign In",
+        text = titleText,
         fontSize = 24.sp,
         modifier = Modifier.padding(bottom = 16.dp)
     )
 }
 
 @Composable
-fun EmailInput(email: String, onEmailChange: (String) -> Unit) {
+fun TextInput(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String
+) {
     OutlinedTextField(
-        value = email,
-        onValueChange = onEmailChange,
-        label = { Text("Email Address") },
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
         trailingIcon = {
-            if (email.isNotEmpty()) {
-                IconButton(onClick = { onEmailChange("") }) {
+            if (value.isNotEmpty()) {
+                IconButton(onClick = { onValueChange("") }) {
                     Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = "Clear Email"
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Clear Input"
                     )
                 }
             }
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 60.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }
+
 
 @Composable
 fun PasswordInput(
@@ -82,20 +91,20 @@ fun PasswordInput(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 60.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }
 
 @Composable
-fun LoginButton(onClick: () -> Unit) {
+fun LoginButton(onClick: () -> Unit, buttonText: String = "Login") {
     Button(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 60.dp, vertical = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .height(48.dp)
     ) {
-        Text(text = "Login", fontSize = 16.sp)
+        Text(text = buttonText, fontSize = 16.sp)
     }
 }
 
@@ -111,3 +120,34 @@ fun AccountActions(onCreateAccount: () -> Unit, onResetPassword: () -> Unit) {
     }
 }
 
+@Composable
+fun AccountCreatedDialog(onDismiss: () -> Unit) {
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = MaterialTheme.shapes.medium
+                )
+                .padding(24.dp)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "Account Created!",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                TextButton(onClick = { onDismiss() }) {
+                    Text(
+                        text = "OK",
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+    }
+}

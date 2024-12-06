@@ -27,15 +27,22 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
     val email by loginViewModel.email.collectAsState()
     val password by loginViewModel.password.collectAsState()
     val passwordVisibility by loginViewModel.passwordVisibility.collectAsState()
-    val navigateToHome by loginViewModel.navigateToHome.collectAsState()
     val loginSuccess by loginViewModel.loginSuccess.collectAsState()
     val errorMessage by loginViewModel.errorMessage.collectAsState()
+    val navigateToSignUp by loginViewModel.navigateToSignUp.collectAsState()
 
     // Handle navigation to home on successful login
     LaunchedEffect(loginSuccess) {
         if (loginSuccess) {
             navController.navigate("home/$email")
             loginViewModel.resetLoginState() // Reset the login state
+        }
+    }
+
+    LaunchedEffect(navigateToSignUp) {
+        if (navigateToSignUp) {
+            navController.navigate("signup")
+            loginViewModel.resetNavigationState() // Reset the navigation state
         }
     }
 
@@ -57,16 +64,22 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
             LoginTitle()
 
             // Email Input
-            EmailInput(
-                email = email,
-                onEmailChange = { loginViewModel.updateEmail(it) }
+            TextInput(
+                value = email,
+                onValueChange = {
+                    loginViewModel.updateEmail(it)
+                    loginViewModel.clearErrorMessage() // Clear errors on user interaction
+                },
+                label = "Enter Email"
             )
 
             // Password Input
             PasswordInput(
                 password = password,
                 passwordVisibility = passwordVisibility,
-                onPasswordChange = { loginViewModel.updatePassword(it) },
+                onPasswordChange = {
+                    loginViewModel.updatePassword(it)
+                    loginViewModel.clearErrorMessage() },
                 onPasswordVisibilityToggle = { loginViewModel.togglePasswordVisibility() }
             )
 
@@ -86,7 +99,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
 
             // Create Account and Reset Password Actions
             AccountActions(
-                onCreateAccount = { /* Navigate to Create Account Screen */ },
+                onCreateAccount = { loginViewModel.navigateToSignUpScreen() },
                 onResetPassword = { /* Navigate to Reset Password Screen */ }
             )
         }

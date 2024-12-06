@@ -23,8 +23,8 @@ class LoginViewModel : ViewModel() {
     private val _passwordVisibility = MutableStateFlow(false)
     val passwordVisibility: StateFlow<Boolean> get() = _passwordVisibility
 
-    private val _navigateToHome = MutableStateFlow<String?>(null)
-    val navigateToHome: StateFlow<String?> get() = _navigateToHome
+    private val _navigateToSignUp = MutableStateFlow(false)
+    val navigateToSignUp: StateFlow<Boolean> get() = _navigateToSignUp
 
     // State to trigger navigation to home on successful login
     private val _loginSuccess = MutableStateFlow(false)
@@ -64,6 +64,14 @@ class LoginViewModel : ViewModel() {
         } else {
             _errorMessage.value = "Email and Password cannot be empty"
         }
+    }
+
+    fun navigateToSignUpScreen() {
+        _navigateToSignUp.value = true
+    }
+
+    fun resetNavigationState() {
+        _navigateToSignUp.value = false
     }
 
     fun clearErrorMessage() {
