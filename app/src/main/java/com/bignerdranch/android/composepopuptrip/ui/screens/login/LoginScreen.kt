@@ -1,6 +1,8 @@
 package com.bignerdranch.android.composepopuptrip.ui.screens.login
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,11 +28,14 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
     val password by loginViewModel.password.collectAsState()
     val passwordVisibility by loginViewModel.passwordVisibility.collectAsState()
     val navigateToHome by loginViewModel.navigateToHome.collectAsState()
+    val loginSuccess by loginViewModel.loginSuccess.collectAsState()
+    val errorMessage by loginViewModel.errorMessage.collectAsState()
 
-    LaunchedEffect(navigateToHome) {
-        if (navigateToHome != null) {
-            navController.navigate("home/${navigateToHome}")
-            loginViewModel.onNavigateToHomeHandled() // Reset navigation state
+    // Handle navigation to home on successful login
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess) {
+            navController.navigate("home/$email")
+            loginViewModel.resetLoginState() // Reset the login state
         }
     }
 
@@ -69,6 +74,15 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
             LoginButton(onClick = {
                 loginViewModel.performLogin() // Perform login and trigger navigation
             })
+
+            // Display error message only if it's not null
+            errorMessage?.let { message ->
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
 
             // Create Account and Reset Password Actions
             AccountActions(
