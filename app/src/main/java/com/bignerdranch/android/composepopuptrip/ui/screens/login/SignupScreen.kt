@@ -135,6 +135,7 @@ fun SignUpScreen(navController: NavController, signUpViewModel: SignUpViewModel 
                 Text(
                     text = message,
                     color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(top = 8.dp)
