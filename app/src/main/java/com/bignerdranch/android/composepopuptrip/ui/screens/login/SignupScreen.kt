@@ -19,19 +19,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import kotlin.math.sign
 
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
-    val mockNavController = rememberNavController() // Mock NavController for preview
-    val mockViewModel = SignUpViewModel() // Create an instance of SignUpViewModel
+    val mockNavController = rememberNavController()
+    val mockViewModel = SignUpViewModel()
 
-    // Mock some initial states if necessary
     mockViewModel.updateUserName("MockUser")
     mockViewModel.updateEmail("mock@example.com")
 
-    // Call the SignUpScreen with mocked dependencies
     SignUpScreen(
         navController = mockNavController,
         viewModel = mockViewModel
@@ -52,7 +49,6 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = view
     val errorMessage by viewModel.errorMessage.collectAsState()
     val showPopup by viewModel.showAccountCreatedPopup.collectAsState()
 
-    // Handle navigation on successful sign-up
     LaunchedEffect(signUpSuccess) {
         if (signUpSuccess) {
             viewModel.resetSignUpState()
@@ -64,7 +60,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = view
         PopupDialog(
             onDismiss = {
                 viewModel.hideAccountCreatedPopup()
-                navController.navigate("login") // Navigate to Login screen after dismiss
+                navController.navigate("login")
             },
             text = "Account Created!",
             buttonText = "OK"
@@ -90,16 +86,12 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = view
             modifier = Modifier.padding(16.dp)
         ) {
 
-            // Title
             LoginTitle("Sign Up")
 
-            // Username Input
             TextInput(value = userName, onValueChange = { viewModel.updateUserName(it) }, label = "Enter User Name")
 
-            // Email Input
             TextInput(value = email, onValueChange = { viewModel.updateEmail(it) }, label = "Enter Email")
 
-            // Password Input
             PasswordInput(
                 password = password,
                 passwordVisibility = passwordVisibility,
@@ -107,7 +99,6 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = view
                 onPasswordVisibilityToggle = { viewModel.togglePasswordVisibility() }
             )
 
-            // Confirm Password Input
             PasswordInput(
                 password = confirmPassword,
                 passwordVisibility = passwordVisibility,
@@ -115,7 +106,6 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = view
                 onPasswordVisibilityToggle = { viewModel.togglePasswordVisibility() }
             )
 
-            // Sign-Up Button
             LoginButton(
                 onClick = { viewModel.performSignUp() },
                 buttonText = "Sign Up"
@@ -125,7 +115,6 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = view
                 Text(text = "Already have an account? Login")
             }
 
-            // Error Message
             errorMessage?.let { message ->
                 Text(
                     text = message,

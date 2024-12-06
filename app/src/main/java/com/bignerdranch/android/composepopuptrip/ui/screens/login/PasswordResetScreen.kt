@@ -5,7 +5,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -28,8 +27,8 @@ fun PasswordResetScreen(navController: NavController, viewModel: PasswordResetVi
         PopupDialog(
             onDismiss = {
                 viewModel.hidePopup()
-                navController.popBackStack() // Navigates back to the previous screen
-                viewModel.resetState() // Reset the state after navigation
+                navController.popBackStack()
+                viewModel.resetState()
             },
             text = "Reset Email Sent!",
             buttonText = "OK"
@@ -46,23 +45,19 @@ fun PasswordResetScreen(navController: NavController, viewModel: PasswordResetVi
             modifier = Modifier.padding(16.dp)
         ) {
 
-            // Title
             LoginTitle("Reset Password")
 
-            // Email Input Field (Reusing TextInput)
             TextInput(
                 value = email,
                 onValueChange = { viewModel.updateEmail(it) },
                 label = "Enter Email Address"
             )
 
-            // Reset Button (Reusing LoginButton with custom text)
             LoginButton(
                 onClick = { viewModel.resetPassword() },
                 buttonText = "Send Reset Email"
             )
 
-            // Error Message
             errorMessage?.let { message ->
                 Text(
                     text = message,
@@ -74,7 +69,6 @@ fun PasswordResetScreen(navController: NavController, viewModel: PasswordResetVi
                 )
             }
 
-            // Back to Login Button (Reusing AccountActions)
             TextButton(onClick = { navController.popBackStack() }) {
                 Text("Back to Login")
             }

@@ -1,7 +1,6 @@
 package com.bignerdranch.android.composepopuptrip.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHost
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,7 +21,6 @@ fun NavigationGraph() {
             LoginScreen(navController = navController)
         }
 
-        // Home Screen with email passed as an argument
         composable(
             route = "home/{email}",
             arguments = listOf(navArgument("email") { type = NavType.StringType })

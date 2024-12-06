@@ -22,10 +22,10 @@ import com.bignerdranch.android.composepopuptrip.R
 @Composable
 fun LoginImage() {
     Image(
-        painter = painterResource(id = R.drawable.pop_up_trip_icon), // Replace with your drawable resource
+        painter = painterResource(id = R.drawable.pop_up_trip_icon),
         contentDescription = "App Logo",
         modifier = Modifier
-            .size(150.dp) // Adjust size as needed
+            .size(150.dp)
             .padding(bottom = 16.dp)
     )
 }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 class SignUpViewModel:  ViewModel(){
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // State variables for user input
     private val _userName = MutableStateFlow("")
     val userName: StateFlow<String> get() = _userName
 
@@ -26,23 +25,18 @@ class SignUpViewModel:  ViewModel(){
     private val _passwordVisibility = MutableStateFlow(false)
     val passwordVisibility: StateFlow<Boolean> get() = _passwordVisibility
 
-    // State for sign-up result
     private val _signUpSuccess = MutableStateFlow(false)
     val signUpSuccess: StateFlow<Boolean> get() = _signUpSuccess
 
     private val _navigateToLogin = MutableStateFlow(false)
     val navigateToLogin: StateFlow<Boolean> get() = _navigateToLogin
 
-    // State for error messages
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> get() = _errorMessage
 
     private val _showAccountCreatedPopup = MutableStateFlow(false)
     val showAccountCreatedPopup: StateFlow<Boolean> get() = _showAccountCreatedPopup
 
-
-
-    // Update input fields
     fun updateUserName(name: String) {
         _userName.value = name
     }
@@ -59,12 +53,10 @@ class SignUpViewModel:  ViewModel(){
         _confirmPassword.value = newPassword
     }
 
-    // Toggle password visibility
     fun togglePasswordVisibility() {
         _passwordVisibility.value = !_passwordVisibility.value
     }
 
-    // Perform sign-up
     fun performSignUp() {
         if (_email.value.isEmpty() || _password.value.isEmpty() || _userName.value.isEmpty()) {
             _errorMessage.value = "All fields are required"
@@ -100,7 +92,6 @@ class SignUpViewModel:  ViewModel(){
         _showAccountCreatedPopup.value = false
     }
 
-    // Reset the state after handling
     fun resetSignUpState() {
         _signUpSuccess.value = false
         _errorMessage.value = null

@@ -15,15 +15,15 @@ import androidx.navigation.compose.rememberNavController
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    val mockNavController = rememberNavController() // Mock NavController for Preview
-    val mockViewModel = LoginViewModel() // Mock ViewModel for Preview
+    val mockNavController = rememberNavController()
+    val mockViewModel = LoginViewModel()
 
     LoginScreen(navController = mockNavController, loginViewModel = mockViewModel)
 }
 
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
-    // Collect state from ViewModel
+
     val email by loginViewModel.email.collectAsState()
     val password by loginViewModel.password.collectAsState()
     val passwordVisibility by loginViewModel.passwordVisibility.collectAsState()
@@ -32,18 +32,17 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
     val navigateToSignUp by loginViewModel.navigateToSignUp.collectAsState()
     val navigateToReset by loginViewModel.navigateToReset.collectAsState()
 
-    // Handle navigation to home on successful login
     LaunchedEffect(loginSuccess) {
         if (loginSuccess) {
             navController.navigate("home/$email")
-            loginViewModel.resetLoginState() // Reset the login state
+            loginViewModel.resetLoginState()
         }
     }
 
     LaunchedEffect(navigateToSignUp) {
         if (navigateToSignUp) {
             navController.navigate("signup")
-            loginViewModel.resetNavigationState() // Reset the navigation state
+            loginViewModel.resetNavigationState()
         }
     }
 
@@ -54,7 +53,6 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
         }
     }
 
-    // Parent layout for the login screen
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
@@ -65,23 +63,19 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
             modifier = Modifier.padding(16.dp)
         ) {
 
-            // Logo/Image
             LoginImage()
 
-            // Title
             LoginTitle()
 
-            // Email Input
             TextInput(
                 value = email,
                 onValueChange = {
                     loginViewModel.updateEmail(it)
-                    loginViewModel.clearErrorMessage() // Clear errors on user interaction
+                    loginViewModel.clearErrorMessage()
                 },
                 label = "Enter Email"
             )
 
-            // Password Input
             PasswordInput(
                 password = password,
                 passwordVisibility = passwordVisibility,
@@ -91,12 +85,10 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 onPasswordVisibilityToggle = { loginViewModel.togglePasswordVisibility() }
             )
 
-            // Login Button
             LoginButton(onClick = {
-                loginViewModel.performLogin() // Perform login and trigger navigation
+                loginViewModel.performLogin()
             })
 
-            // Display error message only if it's not null
             errorMessage?.let { message ->
                 Text(
                     text = message,
@@ -105,7 +97,6 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 )
             }
 
-            // Create Account and Reset Password Actions
             AccountActions(
                 onCreateAccount = { loginViewModel.navigateToSignUpScreen() },
                 onResetPassword = { loginViewModel.navigateToSetScreen() }
