@@ -30,6 +30,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
     val loginSuccess by loginViewModel.loginSuccess.collectAsState()
     val errorMessage by loginViewModel.errorMessage.collectAsState()
     val navigateToSignUp by loginViewModel.navigateToSignUp.collectAsState()
+    val navigateToReset by loginViewModel.navigateToReset.collectAsState()
 
     // Handle navigation to home on successful login
     LaunchedEffect(loginSuccess) {
@@ -43,6 +44,13 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
         if (navigateToSignUp) {
             navController.navigate("signup")
             loginViewModel.resetNavigationState() // Reset the navigation state
+        }
+    }
+
+    LaunchedEffect(navigateToReset) {
+        if (navigateToReset) {
+            navController.navigate("resetPassword")
+            loginViewModel.resetNavigationState()
         }
     }
 
@@ -100,7 +108,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
             // Create Account and Reset Password Actions
             AccountActions(
                 onCreateAccount = { loginViewModel.navigateToSignUpScreen() },
-                onResetPassword = { /* Navigate to Reset Password Screen */ }
+                onResetPassword = { loginViewModel.navigateToSetScreen() }
             )
         }
     }

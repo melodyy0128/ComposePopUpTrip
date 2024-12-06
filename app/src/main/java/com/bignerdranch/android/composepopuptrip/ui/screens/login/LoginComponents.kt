@@ -2,9 +2,7 @@ package com.bignerdranch.android.composepopuptrip.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Visibility
@@ -13,7 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -121,33 +118,42 @@ fun AccountActions(onCreateAccount: () -> Unit, onResetPassword: () -> Unit) {
 }
 
 @Composable
-fun AccountCreatedDialog(onDismiss: () -> Unit) {
+fun PopupDialog(onDismiss: () -> Unit, text: String, buttonText: String) {
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 24.dp, vertical = 16.dp) // Add padding for centering
                 .background(
                     color = MaterialTheme.colorScheme.surface,
                     shape = MaterialTheme.shapes.medium
                 )
-                .padding(24.dp)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(24.dp) // Padding inside the dialog
+            ) {
                 Text(
-                    text = "Account Created!",
+                    text = text,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                TextButton(onClick = { onDismiss() }) {
+                // Action Button
+                Button(
+                    onClick = { onDismiss() },
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                ) {
                     Text(
-                        text = "OK",
-                        color = MaterialTheme.colorScheme.primary
+                        text = buttonText,
+                        style = MaterialTheme.typography.labelLarge
                     )
                 }
             }
         }
     }
 }
+

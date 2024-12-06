@@ -104,7 +104,6 @@ class SignUpViewModel:  ViewModel(){
     fun resetSignUpState() {
         _signUpSuccess.value = false
         _errorMessage.value = null
-        hideAccountCreatedPopup()
     }
 
     fun resetNavigationState() {

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlin.math.sign
 
 @Preview(showBackground = true)
 @Composable
@@ -33,53 +34,49 @@ fun SignUpScreenPreview() {
     // Call the SignUpScreen with mocked dependencies
     SignUpScreen(
         navController = mockNavController,
-        signUpViewModel = mockViewModel
+        viewModel = mockViewModel
     )
 }
 
 
 @Composable
-fun SignUpScreen(navController: NavController, signUpViewModel: SignUpViewModel = viewModel()) {
+fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = viewModel()) {
 
-    val userName by signUpViewModel.userName.collectAsState()
-    val email by signUpViewModel.email.collectAsState()
-    val password by signUpViewModel.password.collectAsState()
-    val confirmPassword by signUpViewModel.confirmPassword.collectAsState()
-    val passwordVisibility by signUpViewModel.passwordVisibility.collectAsState()
-    val signUpSuccess by signUpViewModel.signUpSuccess.collectAsState()
-    val navigateToLogin by signUpViewModel.navigateToLogin.collectAsState()
-    val errorMessage by signUpViewModel.errorMessage.collectAsState()
-    val showPopup by signUpViewModel.showAccountCreatedPopup.collectAsState()
+    val userName by viewModel.userName.collectAsState()
+    val email by viewModel.email.collectAsState()
+    val password by viewModel.password.collectAsState()
+    val confirmPassword by viewModel.confirmPassword.collectAsState()
+    val passwordVisibility by viewModel.passwordVisibility.collectAsState()
+    val signUpSuccess by viewModel.signUpSuccess.collectAsState()
+    val navigateToLogin by viewModel.navigateToLogin.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val showPopup by viewModel.showAccountCreatedPopup.collectAsState()
 
     // Handle navigation on successful sign-up
     LaunchedEffect(signUpSuccess) {
         if (signUpSuccess) {
-            signUpViewModel.showAccountCreatedPopup()
+            viewModel.resetSignUpState()
+            viewModel.showAccountCreatedPopup()
         }
     }
 
     if (showPopup) {
-        AccountCreatedDialog(
+        PopupDialog(
             onDismiss = {
-                signUpViewModel.hideAccountCreatedPopup()
+                viewModel.hideAccountCreatedPopup()
                 navController.navigate("login") // Navigate to Login screen after dismiss
-            }
+            },
+            text = "Account Created!",
+            buttonText = "OK"
         )
     }
-
-//    LaunchedEffect(signUpSuccess) {
-//        if (signUpSuccess) {
-//            navController.navigate("login") // Navigate to login after successful sign-up
-//            signUpViewModel.resetSignUpState()
-//        }
-//    }
 
     LaunchedEffect(navigateToLogin) {
         if (navigateToLogin) {
             navController.navigate("login") {
                 popUpTo("signup") { inclusive = true }
             }
-            signUpViewModel.resetNavigationState()
+            viewModel.resetNavigationState()
         }
     }
 
@@ -92,41 +89,39 @@ fun SignUpScreen(navController: NavController, signUpViewModel: SignUpViewModel 
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(16.dp)
         ) {
-            // Logo
-            LoginImage() // Reuse the LoginImage composable for the logo.
 
             // Title
             LoginTitle("Sign Up")
 
             // Username Input
-            TextInput(value = userName, onValueChange = { signUpViewModel.updateUserName(it) }, label = "Enter User Name")
+            TextInput(value = userName, onValueChange = { viewModel.updateUserName(it) }, label = "Enter User Name")
 
             // Email Input
-            TextInput(value = email, onValueChange = { signUpViewModel.updateEmail(it) }, label = "Enter Email")
+            TextInput(value = email, onValueChange = { viewModel.updateEmail(it) }, label = "Enter Email")
 
             // Password Input
             PasswordInput(
                 password = password,
                 passwordVisibility = passwordVisibility,
-                onPasswordChange = { signUpViewModel.updatePassword(it) },
-                onPasswordVisibilityToggle = { signUpViewModel.togglePasswordVisibility() }
+                onPasswordChange = { viewModel.updatePassword(it) },
+                onPasswordVisibilityToggle = { viewModel.togglePasswordVisibility() }
             )
 
             // Confirm Password Input
             PasswordInput(
                 password = confirmPassword,
                 passwordVisibility = passwordVisibility,
-                onPasswordChange = { signUpViewModel.updateConfirmPassword(it) },
-                onPasswordVisibilityToggle = { signUpViewModel.togglePasswordVisibility() }
+                onPasswordChange = { viewModel.updateConfirmPassword(it) },
+                onPasswordVisibilityToggle = { viewModel.togglePasswordVisibility() }
             )
 
             // Sign-Up Button
             LoginButton(
-                onClick = { signUpViewModel.performSignUp() },
+                onClick = { viewModel.performSignUp() },
                 buttonText = "Sign Up"
             )
 
-            TextButton(onClick = { signUpViewModel.navigateToLoginScreen() }) {
+            TextButton(onClick = { viewModel.navigateToLoginScreen() }) {
                 Text(text = "Already have an account? Login")
             }
 

@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.bignerdranch.android.composepopuptrip.ui.screens.home.HomeScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.LoginScreen
+import com.bignerdranch.android.composepopuptrip.ui.screens.login.PasswordResetScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.SignUpScreen
 
 @Composable
@@ -32,6 +33,10 @@ fun NavigationGraph() {
 
         composable("signup") {
             SignUpScreen(navController = navController)
+        }
+
+        composable("resetPassword"){
+            PasswordResetScreen(navController = navController)
         }
     }
 }

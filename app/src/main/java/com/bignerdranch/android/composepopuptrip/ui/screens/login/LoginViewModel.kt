@@ -26,6 +26,9 @@ class LoginViewModel : ViewModel() {
     private val _navigateToSignUp = MutableStateFlow(false)
     val navigateToSignUp: StateFlow<Boolean> get() = _navigateToSignUp
 
+    private val _navigateToReset = MutableStateFlow(false)
+    val navigateToReset: StateFlow<Boolean> get() = _navigateToReset
+
     // State to trigger navigation to home on successful login
     private val _loginSuccess = MutableStateFlow(false)
     val loginSuccess: StateFlow<Boolean> get() = _loginSuccess
@@ -70,8 +73,13 @@ class LoginViewModel : ViewModel() {
         _navigateToSignUp.value = true
     }
 
+    fun navigateToSetScreen() {
+        _navigateToReset.value = true
+    }
+
     fun resetNavigationState() {
         _navigateToSignUp.value = false
+        _navigateToReset.value = false
     }
 
     fun clearErrorMessage() {
