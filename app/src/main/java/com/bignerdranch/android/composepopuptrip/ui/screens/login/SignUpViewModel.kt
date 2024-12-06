@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SignUpViewModel : ViewModel() {
-
+class SignUpViewModel:  ViewModel(){
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     // State variables for user input
