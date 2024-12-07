@@ -9,17 +9,31 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: GooglePlacesRepository) : ViewModel() {
 
+    // State for starting point search query
+    private val _startQuery = MutableStateFlow("")
+    val startQuery: StateFlow<String> get() = _startQuery
+
     // State for search query
-    private val _query = MutableStateFlow("")
-    val query: StateFlow<String> get() = _query
+    private val _destQuery = MutableStateFlow("")
+    val destQuery: StateFlow<String> get() = _destQuery
 
     // State for autocomplete suggestions
     private val _suggestions = MutableStateFlow<List<String>>(emptyList())
     val suggestions: StateFlow<List<String>> get() = _suggestions
 
+    // Update the starting point query
+    fun updateStartQuery(newQuery: String) {
+        _startQuery.value = newQuery
+        if (newQuery.isNotEmpty()) {
+            fetchPlaceSuggestions(newQuery)
+        } else {
+            _suggestions.value = emptyList()
+        }
+    }
+
     // Update query and fetch suggestions
     fun updateQuery(newQuery: String) {
-        _query.value = newQuery
+        _destQuery.value = newQuery
         if (newQuery.isNotEmpty()) {
             fetchPlaceSuggestions(newQuery)
         } else {

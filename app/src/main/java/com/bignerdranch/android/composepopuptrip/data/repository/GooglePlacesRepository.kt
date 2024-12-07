@@ -1,5 +1,6 @@
 package com.bignerdranch.android.composepopuptrip.data.repository
 
+import android.util.Log
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 
@@ -19,9 +20,13 @@ class GooglePlacesRepository(private val placesClient: PlacesClient) {
                 val suggestions = response.autocompletePredictions.map {
                     it.getFullText(null).toString()
                 }
+
+//                Log.d("GooglePlacesRepository", "Suggestions: $suggestions")
                 onSuccess(suggestions)
             }
             .addOnFailureListener { exception ->
+
+//                Log.e("GooglePlacesRepository", "Error fetching suggestions", exception)
                 onError(exception)
             }
     }
