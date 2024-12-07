@@ -11,7 +11,7 @@ import com.bignerdranch.android.composepopuptrip.ui.screens.home.HomeViewModel
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.LoginScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.PasswordResetScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.SignUpScreen
-import com.bignerdranch.android.composepopuptrip.ui.screens.routeMap.RouteMap
+import com.bignerdranch.android.composepopuptrip.ui.screens.home.RouteMap
 
 @Composable
 fun NavigationGraph(homeViewModel: HomeViewModel) {
