@@ -124,7 +124,7 @@ fun PopupDialog(onDismiss: () -> Unit, text: String, buttonText: String) {
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp) // Add padding for centering
+                .padding(horizontal = 24.dp, vertical = 16.dp)
                 .background(
                     color = MaterialTheme.colorScheme.surface,
                     shape = MaterialTheme.shapes.medium
@@ -132,7 +132,7 @@ fun PopupDialog(onDismiss: () -> Unit, text: String, buttonText: String) {
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(24.dp) // Padding inside the dialog
+                modifier = Modifier.padding(24.dp)
             ) {
                 Text(
                     text = text,

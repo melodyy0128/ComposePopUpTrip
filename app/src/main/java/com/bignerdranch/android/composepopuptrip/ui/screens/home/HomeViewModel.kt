@@ -9,19 +9,15 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: GooglePlacesRepository) : ViewModel() {
 
-    // State for starting point search query
     private val _startQuery = MutableStateFlow("")
     val startQuery: StateFlow<String> get() = _startQuery
 
-    // State for search query
     private val _destQuery = MutableStateFlow("")
     val destQuery: StateFlow<String> get() = _destQuery
 
-    // State for autocomplete suggestions
     private val _suggestions = MutableStateFlow<List<String>>(emptyList())
     val suggestions: StateFlow<List<String>> get() = _suggestions
 
-    // Update the starting point query
     fun updateStartQuery(newQuery: String) {
         _startQuery.value = newQuery
         if (newQuery.isNotEmpty()) {
@@ -31,7 +27,6 @@ class HomeViewModel(private val repository: GooglePlacesRepository) : ViewModel(
         }
     }
 
-    // Update query and fetch suggestions
     fun updateQuery(newQuery: String) {
         _destQuery.value = newQuery
         if (newQuery.isNotEmpty()) {
@@ -41,7 +36,6 @@ class HomeViewModel(private val repository: GooglePlacesRepository) : ViewModel(
         }
     }
 
-    // Fetch suggestions from the repository
     private fun fetchPlaceSuggestions(query: String) {
         viewModelScope.launch {
             repository.fetchPlaceSuggestions(
@@ -50,7 +44,7 @@ class HomeViewModel(private val repository: GooglePlacesRepository) : ViewModel(
                     _suggestions.value = suggestions
                 },
                 onError = {
-                    _suggestions.value = emptyList() // Clear suggestions on error
+                    _suggestions.value = emptyList()
                 }
             )
         }
