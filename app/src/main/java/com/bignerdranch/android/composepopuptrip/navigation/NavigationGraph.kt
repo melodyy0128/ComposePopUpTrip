@@ -8,10 +8,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.bignerdranch.android.composepopuptrip.ui.components.BottomNavItem
@@ -37,7 +39,8 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
 
     Scaffold(
         bottomBar = {
-            val currentRoute = navController.currentBackStackEntry?.destination?.route?:"home"
+            val currentBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = currentBackStackEntry?.destination?.route
             Log.d("NavDebug", "Current Route: $currentRoute")
             if (currentRoute in listOf("home", "saved", "settings")) {
                 BottomNavigationBar(
