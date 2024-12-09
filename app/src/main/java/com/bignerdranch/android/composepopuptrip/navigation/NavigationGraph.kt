@@ -41,7 +41,7 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
         bottomBar = {
             val currentBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = currentBackStackEntry?.destination?.route
-            Log.d("NavDebug", "Current Route: $currentRoute")
+//            Log.d("NavDebug", "Current Route: $currentRoute")
             if (currentRoute in listOf("home", "saved", "settings")) {
                 BottomNavigationBar(
                     items = bottomNavItems,
