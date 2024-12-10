@@ -24,8 +24,20 @@ import com.bignerdranch.android.composepopuptrip.ui.screens.login.LoginScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.PasswordResetScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.login.SignUpScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.home.RouteMap
+import com.bignerdranch.android.composepopuptrip.ui.screens.saved.SavedPlacesScreen
+import com.bignerdranch.android.composepopuptrip.ui.screens.saved.SavedRoutesScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.saved.SavedScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.settings.SettingsScreen
+
+fun shouldShowBottomNav(currentRoute: String?): Boolean {
+    return currentRoute in listOf(
+        "home",
+        "saved",
+        "settings",
+        "savedPlaces",
+        "savedRoutes"
+    ) || currentRoute?.startsWith("routeMap/") == true
+}
 
 @Composable
 fun NavigationGraph(homeViewModel: HomeViewModel) {
@@ -42,7 +54,7 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
             val currentBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = currentBackStackEntry?.destination?.route
 //            Log.d("NavDebug", "Current Route: $currentRoute")
-            if (currentRoute in listOf("home", "saved", "settings")) {
+            if (shouldShowBottomNav(currentRoute)) {
                 BottomNavigationBar(
                     items = bottomNavItems,
                     navController = navController,
@@ -89,43 +101,21 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
             }
 
             composable("saved") {
-                SavedScreen()
+                SavedScreen(navController = navController)
             }
 
             composable("settings") {
                 SettingsScreen()
             }
+
+            composable("savedPlaces") {
+                SavedPlacesScreen()
+            }
+
+            composable("savedRoutes") {
+                SavedRoutesScreen()
+            }
         }
     }
 
-//    NavHost(navController = navController, startDestination = "home") {
-//
-//        composable("login") {
-//            LoginScreen(navController = navController)
-//        }
-//
-//        composable("signup") {
-//            SignUpScreen(navController = navController)
-//        }
-//
-//        composable("resetPassword"){
-//            PasswordResetScreen(navController = navController)
-//        }
-//
-//        composable("home") {
-//            HomeScreen(navController = navController, homeViewModel = homeViewModel)
-//        }
-//
-//        composable(
-//            route = "routeMap/{startAddress}/{destinationAddress}",
-//            arguments = listOf(
-//                navArgument("startAddress") { type = NavType.StringType },
-//                navArgument("destinationAddress") { type = NavType.StringType }
-//            )
-//        ) { backStackEntry ->
-//            val startAddress = backStackEntry.arguments?.getString("startAddress") ?: ""
-//            val destinationAddress = backStackEntry.arguments?.getString("destinationAddress") ?: ""
-//            RouteMap(startAddress = startAddress, destinationAddress = destinationAddress)
-//        }
-//    }
 }

@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.bignerdranch.android.composepopuptrip.ui.components.AccountActions
-import com.bignerdranch.android.composepopuptrip.ui.components.LoginButton
+import com.bignerdranch.android.composepopuptrip.ui.components.AppButton
 import com.bignerdranch.android.composepopuptrip.ui.components.LoginImage
 import com.bignerdranch.android.composepopuptrip.ui.components.LoginTitle
 import com.bignerdranch.android.composepopuptrip.ui.components.PasswordInput
@@ -91,7 +91,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 onPasswordVisibilityToggle = { loginViewModel.togglePasswordVisibility() }
             )
 
-            LoginButton(onClick = {
+            AppButton(onClick = {
                 loginViewModel.performLogin()
             })
 

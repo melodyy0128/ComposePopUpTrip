@@ -93,19 +93,6 @@ fun PasswordInput(
 }
 
 @Composable
-fun LoginButton(onClick: () -> Unit, buttonText: String = "Login") {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .height(48.dp)
-    ) {
-        Text(text = buttonText, fontSize = 16.sp)
-    }
-}
-
-@Composable
 fun AccountActions(onCreateAccount: () -> Unit, onResetPassword: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         TextButton(onClick = onCreateAccount) {
