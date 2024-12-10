@@ -29,6 +29,8 @@ import com.bignerdranch.android.composepopuptrip.ui.screens.saved.SavedRoutesScr
 import com.bignerdranch.android.composepopuptrip.ui.screens.saved.SavedScreen
 import com.bignerdranch.android.composepopuptrip.ui.screens.settings.SettingsScreen
 
+//private const val TAG = ""
+
 fun shouldShowBottomNav(currentRoute: String?): Boolean {
     return currentRoute in listOf(
         "home",
@@ -109,7 +111,9 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
             }
 
             composable("savedPlaces") {
-                SavedPlacesScreen()
+                SavedPlacesScreen(
+                    onBackClick = { navController.popBackStack() }
+                )
             }
 
             composable("savedRoutes") {
