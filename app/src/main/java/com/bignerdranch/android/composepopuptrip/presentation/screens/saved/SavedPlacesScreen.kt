@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bignerdranch.android.composepopuptrip.domain.entities.Place
+import com.bignerdranch.android.composepopuptrip.data.entities.Place
 import com.bignerdranch.android.composepopuptrip.presentation.components.TopBarWithBackclick
 
 @Composable

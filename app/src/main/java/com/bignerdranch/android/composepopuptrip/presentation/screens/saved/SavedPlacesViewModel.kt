@@ -1,7 +1,7 @@
 package com.bignerdranch.android.composepopuptrip.presentation.screens.saved
 
 import androidx.lifecycle.ViewModel
-import com.bignerdranch.android.composepopuptrip.domain.entities.Place
+import com.bignerdranch.android.composepopuptrip.data.entities.Place
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

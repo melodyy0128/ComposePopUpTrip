@@ -1,12 +1,8 @@
-package com.bignerdranch.android.composepopuptrip.domain.entities
+package com.bignerdranch.android.composepopuptrip.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
-
-//make this user class an entity
-//add the entity annotation
 
 @Entity(tableName = "users")
 data class User(

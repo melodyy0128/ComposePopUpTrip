@@ -1,4 +1,4 @@
-package com.bignerdranch.android.composepopuptrip.domain.entities
+package com.bignerdranch.android.composepopuptrip.data.entities
 
 data class Place(
     val id: String,

@@ -1,4 +1,4 @@
-package com.bignerdranch.android.composepopuptrip.domain.entities
+package com.bignerdranch.android.composepopuptrip.data.entities
 
 data class Route(
     val start: Place,
