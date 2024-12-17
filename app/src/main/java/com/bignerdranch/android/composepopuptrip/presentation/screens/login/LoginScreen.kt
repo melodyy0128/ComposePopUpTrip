@@ -1,5 +1,6 @@
 package com.bignerdranch.android.composepopuptrip.presentation.screens.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +19,9 @@ import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTi
 import com.bignerdranch.android.composepopuptrip.presentation.components.PasswordInput
 import com.bignerdranch.android.composepopuptrip.presentation.components.TextInput
 
+// TAG for logging
+private const val TAG = "LoginScreen"
+
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
 
@@ -35,8 +39,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
         if(navigateToCompleteProfile){
             navController.navigate("completeProfile/${email.trim()}")
             loginViewModel.resetNavigationState()
-        }
-        else if (loginSuccess) {
+        } else if (loginSuccess) {
             navController.navigate("home")
             loginViewModel.resetLoginState()
         }

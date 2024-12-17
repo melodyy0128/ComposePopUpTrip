@@ -1,5 +1,6 @@
 package com.bignerdranch.android.composepopuptrip.presentation.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bignerdranch.android.composepopuptrip.data.DaoObjects.UserDao
@@ -9,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
+private const val TAG = "LoginViewModel"
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
@@ -58,7 +61,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                         if (task.isSuccessful) {
                             viewModelScope.launch {
                                 val user = repository.getUserByEmail(_email.value)
-                                _navigateToCompleteProfile.value = user != null
+                                _navigateToCompleteProfile.value = user == null
                                 _loginSuccess.value = true
                             }
                         } else {
