@@ -1,6 +1,11 @@
 package com.bignerdranch.android.composepopuptrip.presentation.screens.profile
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -11,7 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.bignerdranch.android.composepopuptrip.presentation.components.AppButton
+import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTitle
 
 @Composable
 fun CompleteProfileScreen(
@@ -34,26 +44,44 @@ fun CompleteProfileScreen(
         }
     }
 
-    Column {
-        TextField(
-            value = email,
-            onValueChange = {},
-            enabled = false,
-            label = { Text("Email") }
-        )
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            LoginTitle("Complete Profile")
 
-        TextField(
-            value = inputText,
-            onValueChange = { newValue: String -> inputText = newValue },
-            label = { Text("Username") }
-        )
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                value = email,
+                onValueChange = {},
+                enabled = false,
+                label = { Text("Email") }
+            )
 
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                value = inputText,
+                onValueChange = { newValue: String -> inputText = newValue },
+                label = { Text("Username") }
+            )
 
-        Button(onClick = {
-            viewModel.updateUsername(inputText)
-            viewModel.completeProfile(email)
-            }) {
-            Text("Complete Profile")
+            AppButton(
+                onClick = {
+                    viewModel.updateUsername(inputText)
+                    viewModel.completeProfile(email)
+                },
+                buttonText = "Complete Profile"
+            )
+
         }
     }
 
