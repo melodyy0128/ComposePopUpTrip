@@ -2,8 +2,8 @@ package com.bignerdranch.android.composepopuptrip.presentation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -26,7 +26,7 @@ import com.bignerdranch.android.composepopuptrip.presentation.screens.home.Route
 import com.bignerdranch.android.composepopuptrip.presentation.screens.login.LoginViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.CompleteProfileScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.CompleteProfileViewModel
-//import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.ProfileScreen
+import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.ProfileScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.ProfileViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedPlacesScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedRoutesScreen
@@ -48,17 +48,18 @@ fun shouldShowBottomNav(currentRoute: String?): Boolean {
 
 @Composable
 fun NavigationGraph(
+    sharedViewModel: SharedViewModel,
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     completeProfileViewModel: CompleteProfileViewModel,
-//    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel
 ) {
     val navController = rememberNavController()
 
     val bottomNavItems = listOf(
         BottomNavItem("Home", "home", Icons.Filled.Home),
         BottomNavItem("Saved", "saved", Icons.Filled.Star),
-        BottomNavItem("Profile", "profile", Icons.Filled.Settings)
+        BottomNavItem("Profile", "profile", Icons.Filled.AccountCircle)
     )
 
     Scaffold(
@@ -84,7 +85,11 @@ fun NavigationGraph(
         ) {
 
             composable("login") {
-                LoginScreen(navController = navController, loginViewModel = loginViewModel)
+                LoginScreen(
+                    navController = navController,
+                    loginViewModel = loginViewModel,
+                    sharedViewModel = sharedViewModel
+                )
             }
 
             composable("signup") {
@@ -119,18 +124,18 @@ fun NavigationGraph(
             composable(
                 route = "completeProfile/{email}",
                 arguments = listOf(
-                    navArgument("email") { type = NavType.StringType } )
+                    navArgument("email") { type = NavType.StringType })
             ) { backStackEntry ->
                 val email = backStackEntry.arguments?.getString("email") ?: ""
                 CompleteProfileScreen(email, navController, completeProfileViewModel)
             }
 
-//            composable("profile") {
-//                ProfileScreen(
-//                    email = "", // Pass actual email from saved state
-//                    viewModel = profileViewModel
-//                )
-//            }
+            composable("profile") {
+                ProfileScreen(
+                    viewModel = profileViewModel,
+                    sharedViewModel = sharedViewModel
+                )
+            }
 
             composable("settings") {
                 SettingsScreen(

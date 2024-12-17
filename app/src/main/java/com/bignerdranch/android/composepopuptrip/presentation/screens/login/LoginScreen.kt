@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.bignerdranch.android.composepopuptrip.presentation.SharedViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.components.AccountActions
 import com.bignerdranch.android.composepopuptrip.presentation.components.AppButton
 import com.bignerdranch.android.composepopuptrip.presentation.components.LoginImage
@@ -23,7 +24,11 @@ import com.bignerdranch.android.composepopuptrip.presentation.components.TextInp
 private const val TAG = "LoginScreen"
 
 @Composable
-fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
+fun LoginScreen(
+    navController: NavController,
+    loginViewModel: LoginViewModel,
+    sharedViewModel: SharedViewModel
+) {
 
     val email by loginViewModel.email.collectAsState()
     val password by loginViewModel.password.collectAsState()
@@ -36,12 +41,14 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
 
 
     LaunchedEffect(loginSuccess) {
-        if(navigateToCompleteProfile){
+        if (navigateToCompleteProfile) {
             navController.navigate("completeProfile/${email.trim()}")
             loginViewModel.resetNavigationState()
+            sharedViewModel.setEmail(email.trim())
         } else if (loginSuccess) {
             navController.navigate("home")
             loginViewModel.resetLoginState()
+            sharedViewModel.setEmail(email.trim())
         }
     }
 
@@ -87,7 +94,8 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
                 passwordVisibility = passwordVisibility,
                 onPasswordChange = {
                     loginViewModel.updatePassword(it)
-                    loginViewModel.clearErrorMessage() },
+                    loginViewModel.clearErrorMessage()
+                },
                 onPasswordVisibilityToggle = { loginViewModel.togglePasswordVisibility() }
             )
 

@@ -13,6 +13,7 @@ import com.bignerdranch.android.composepopuptrip.data.database.UserDatabase
 import com.bignerdranch.android.composepopuptrip.data.repository.GooglePlacesRepository
 import com.bignerdranch.android.composepopuptrip.data.repository.UserRepository
 import com.bignerdranch.android.composepopuptrip.presentation.NavigationGraph
+import com.bignerdranch.android.composepopuptrip.presentation.SharedViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.home.HomeViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.login.LoginViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.CompleteProfileViewModel
@@ -36,18 +37,20 @@ class MainActivity : ComponentActivity() {
         ).build()
         val repository = UserRepository(db.userDao())
 
+        val sharedViewModel: SharedViewModel by viewModels()
         val loginViewModel = LoginViewModel(repository)
         val homeViewModel = HomeViewModel(placesRepository)
         val completeProfileViewModel = CompleteProfileViewModel(repository)
-//        val profileViewModel = ProfileViewModel(userDao)
+        val profileViewModel = ProfileViewModel(repository)
 
         setContent {
             ComposePopUpTripTheme {
                 NavigationGraph(
+                    sharedViewModel = sharedViewModel,
                     loginViewModel = loginViewModel,
                     homeViewModel = homeViewModel,
                     completeProfileViewModel = completeProfileViewModel,
-//                    profileViewModel = profileViewModel
+                    profileViewModel = profileViewModel
                 )
             }
         }
