@@ -34,7 +34,10 @@ class MainActivity : ComponentActivity() {
         val db = Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java, "user_database"
-        ).build()
+        )
+            // clean database on schema change
+            .fallbackToDestructiveMigration()
+            .build()
         val repository = UserRepository(db.userDao())
 
         val sharedViewModel: SharedViewModel by viewModels()

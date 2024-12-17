@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bignerdranch.android.composepopuptrip.presentation.components.AppButton
 import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTitle
+import com.bignerdranch.android.composepopuptrip.presentation.components.ProfilePlaceTypeSelector
 
 @Composable
 fun CompleteProfileScreen(
@@ -30,12 +31,13 @@ fun CompleteProfileScreen(
     viewModel: CompleteProfileViewModel
 ) {
 
-
     val usernameInput by viewModel.username.collectAsState()
-
+    val selectedPlaceTypes by viewModel.placeTypes.collectAsState()
     val navigateToHome by viewModel.navigateToHome.collectAsState()
 
     var inputText by remember { mutableStateOf(usernameInput) }
+
+    val placeTypes = listOf("Restaurant", "Park", "Museum", "Cafe", "Gym", "Beach", "Library")
 
     LaunchedEffect(navigateToHome) {
         if (navigateToHome) {
@@ -72,6 +74,21 @@ fun CompleteProfileScreen(
                 value = inputText,
                 onValueChange = { newValue: String -> inputText = newValue },
                 label = { Text("Username") }
+            )
+
+            // Place Types Selector
+            Text(
+                text = "Select Your Place Preferences:",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            ProfilePlaceTypeSelector(
+                placeTypes = placeTypes,
+                selectedTypes = selectedPlaceTypes,
+                onSelectionChanged = { updatedTypes ->
+                    viewModel.updatePlaceTypes(updatedTypes)
+                },
+                modifier = Modifier.fillMaxWidth()
             )
 
             AppButton(
