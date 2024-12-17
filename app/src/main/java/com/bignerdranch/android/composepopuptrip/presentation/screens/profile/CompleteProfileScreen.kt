@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.bignerdranch.android.composepopuptrip.data.entities.PlaceType
 import com.bignerdranch.android.composepopuptrip.presentation.components.AppButton
 import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTitle
 import com.bignerdranch.android.composepopuptrip.presentation.components.ProfilePlaceTypeSelector
@@ -37,7 +38,7 @@ fun CompleteProfileScreen(
 
     var inputText by remember { mutableStateOf(usernameInput) }
 
-    val placeTypes = listOf("Restaurant", "Park", "Museum", "Cafe", "Gym", "Beach", "Library")
+    val placeTypes = PlaceType.displayNames
 
     LaunchedEffect(navigateToHome) {
         if (navigateToHome) {
@@ -88,7 +89,7 @@ fun CompleteProfileScreen(
                 onSelectionChanged = { updatedTypes ->
                     viewModel.updatePlaceTypes(updatedTypes)
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
             )
 
             AppButton(
