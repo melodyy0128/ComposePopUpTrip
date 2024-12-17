@@ -23,10 +23,15 @@ import com.bignerdranch.android.composepopuptrip.presentation.screens.login.Logi
 import com.bignerdranch.android.composepopuptrip.presentation.screens.login.PasswordResetScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.login.SignUpScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.home.RouteMap
+import com.bignerdranch.android.composepopuptrip.presentation.screens.login.LoginViewModel
+import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.CompleteProfileScreen
+import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.CompleteProfileViewModel
+//import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.ProfileScreen
+import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.ProfileViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedPlacesScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedRoutesScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedScreen
-import com.bignerdranch.android.composepopuptrip.presentation.screens.settings.SettingsScreen
+import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.SettingsScreen
 
 //private const val TAG = ""
 
@@ -34,6 +39,7 @@ fun shouldShowBottomNav(currentRoute: String?): Boolean {
     return currentRoute in listOf(
         "home",
         "saved",
+        "profile",
         "settings",
         "savedPlaces",
         "savedRoutes"
@@ -41,13 +47,18 @@ fun shouldShowBottomNav(currentRoute: String?): Boolean {
 }
 
 @Composable
-fun NavigationGraph(homeViewModel: HomeViewModel) {
+fun NavigationGraph(
+    loginViewModel: LoginViewModel,
+    homeViewModel: HomeViewModel,
+    completeProfileViewModel: CompleteProfileViewModel,
+//    profileViewModel: ProfileViewModel
+) {
     val navController = rememberNavController()
 
     val bottomNavItems = listOf(
         BottomNavItem("Home", "home", Icons.Filled.Home),
         BottomNavItem("Saved", "saved", Icons.Filled.Star),
-        BottomNavItem("Settings", "settings", Icons.Filled.Settings)
+        BottomNavItem("Profile", "profile", Icons.Filled.Settings)
     )
 
     Scaffold(
@@ -73,7 +84,7 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
         ) {
 
             composable("login") {
-                LoginScreen(navController = navController)
+                LoginScreen(navController = navController, loginViewModel = loginViewModel)
             }
 
             composable("signup") {
@@ -105,8 +116,26 @@ fun NavigationGraph(homeViewModel: HomeViewModel) {
                 SavedScreen(navController = navController)
             }
 
+            composable(
+                route = "completeProfile/{email}",
+                arguments = listOf(
+                    navArgument("email") { type = NavType.StringType } )
+            ) { backStackEntry ->
+                val email = backStackEntry.arguments?.getString("email") ?: ""
+                CompleteProfileScreen(email, navController, completeProfileViewModel)
+            }
+
+//            composable("profile") {
+//                ProfileScreen(
+//                    email = "", // Pass actual email from saved state
+//                    viewModel = profileViewModel
+//                )
+//            }
+
             composable("settings") {
-                SettingsScreen()
+                SettingsScreen(
+
+                )
             }
 
             composable("savedPlaces") {

@@ -2,12 +2,15 @@ package com.bignerdranch.android.composepopuptrip.presentation.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bignerdranch.android.composepopuptrip.data.DaoObjects.UserDao
+import com.bignerdranch.android.composepopuptrip.data.entities.User
+import com.bignerdranch.android.composepopuptrip.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -28,6 +31,9 @@ class LoginViewModel : ViewModel() {
 
     private val _loginSuccess = MutableStateFlow(false)
     val loginSuccess: StateFlow<Boolean> get() = _loginSuccess
+
+    private val _navigateToCompleteProfile = MutableStateFlow(false)
+    val navigateToCompleteProfile: StateFlow<Boolean> get() = _navigateToCompleteProfile
 
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> get() = _errorMessage
@@ -50,7 +56,11 @@ class LoginViewModel : ViewModel() {
                 auth.signInWithEmailAndPassword(_email.value, _password.value)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            _loginSuccess.value = true
+                            viewModelScope.launch {
+                                val user = repository.getUserByEmail(_email.value)
+                                _navigateToCompleteProfile.value = user != null
+                                _loginSuccess.value = true
+                            }
                         } else {
                             _errorMessage.value = "Login failed. Please try again."
                         }
@@ -72,6 +82,7 @@ class LoginViewModel : ViewModel() {
     fun resetNavigationState() {
         _navigateToSignUp.value = false
         _navigateToReset.value = false
+        _navigateToCompleteProfile.value = false
     }
 
     fun clearErrorMessage() {

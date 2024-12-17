@@ -18,28 +18,25 @@ import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTi
 import com.bignerdranch.android.composepopuptrip.presentation.components.PasswordInput
 import com.bignerdranch.android.composepopuptrip.presentation.components.TextInput
 
-@Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
-    val mockNavController = rememberNavController()
-    val mockViewModel = LoginViewModel()
-
-    LoginScreen(navController = mockNavController, loginViewModel = mockViewModel)
-}
-
-@Composable
-fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
 
     val email by loginViewModel.email.collectAsState()
     val password by loginViewModel.password.collectAsState()
     val passwordVisibility by loginViewModel.passwordVisibility.collectAsState()
     val loginSuccess by loginViewModel.loginSuccess.collectAsState()
+    val navigateToCompleteProfile by loginViewModel.navigateToCompleteProfile.collectAsState()
     val errorMessage by loginViewModel.errorMessage.collectAsState()
     val navigateToSignUp by loginViewModel.navigateToSignUp.collectAsState()
     val navigateToReset by loginViewModel.navigateToReset.collectAsState()
 
+
     LaunchedEffect(loginSuccess) {
-        if (loginSuccess) {
+        if(navigateToCompleteProfile){
+            navController.navigate("completeProfile/${email.trim()}")
+            loginViewModel.resetNavigationState()
+        }
+        else if (loginSuccess) {
             navController.navigate("home")
             loginViewModel.resetLoginState()
         }

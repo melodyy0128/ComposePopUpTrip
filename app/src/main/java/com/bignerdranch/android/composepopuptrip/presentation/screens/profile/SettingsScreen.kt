@@ -1,4 +1,4 @@
-package com.bignerdranch.android.composepopuptrip.presentation.screens.settings
+package com.bignerdranch.android.composepopuptrip.presentation.screens.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
