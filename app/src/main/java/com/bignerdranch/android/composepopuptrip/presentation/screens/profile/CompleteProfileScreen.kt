@@ -38,7 +38,7 @@ fun CompleteProfileScreen(
 
     var inputText by remember { mutableStateOf(usernameInput) }
 
-    val placeTypes = PlaceType.displayNames
+    val placeTypesByCategory = PlaceType.entries.groupBy { it.category }
 
     LaunchedEffect(navigateToHome) {
         if (navigateToHome) {
@@ -80,17 +80,30 @@ fun CompleteProfileScreen(
             // Place Types Selector
             Text(
                 text = "Select Your Place Preferences:",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleMedium
             )
 
-            ProfilePlaceTypeSelector(
-                placeTypes = placeTypes,
-                selectedTypes = selectedPlaceTypes,
-                onSelectionChanged = { updatedTypes ->
-                    viewModel.updatePlaceTypes(updatedTypes)
-                },
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            )
+            placeTypesByCategory.forEach { (category, placeTypes) ->
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = category,
+                        style = MaterialTheme.typography.titleSmall,
+//                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+
+                    ProfilePlaceTypeSelector(
+                        placeTypes = placeTypes.map { it.displayName },
+                        selectedTypes = selectedPlaceTypes,
+                        onSelectionChanged = { updatedTypes ->
+                            viewModel.updatePlaceTypes(updatedTypes)
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
 
             AppButton(
                 onClick = {

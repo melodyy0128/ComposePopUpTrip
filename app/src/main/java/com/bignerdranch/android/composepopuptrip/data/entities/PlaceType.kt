@@ -1,37 +1,38 @@
 package com.bignerdranch.android.composepopuptrip.data.entities
 
-enum class PlaceType(val displayName: String) {
-    RESTAURANT("Restaurant"),
-    CAFE("Cafe"),
-    BAKER("Bakery"),
-    PARK("Park"),
-    MUSEUM("Museum"),
-    SHOPPING_MALL("Shopping Mall"),
-    BAR("Bar"),
-    LIBRARY("Library"),
-    BOOK_STORE("Book Store"),
-    CLOTHING_STORE("Clothing Store"),
-    PET_STORE("Pet Store"),
-    SHOE_STORE("Shoe Store"),
-    FLORIST("Florist"),
-    MOVIE_THEATER("Movie Theater"),
-    NIGHT_CLUB("Night Club"),
-    ZOO("Zoo"),
-    AQUARIUM("Aquarium"),
-    AMUSEMENT_PARK("Amusement Park"),
-    TOURIST_ATTRACTION("Tourist Attraction"),
-    ART_GALLERY("Art Gallery"),
-    BEACH("Beach"),
-    SPA("Spa");
+enum class PlaceType(val displayName: String, val category: String) {
+    RESTAURANT("Restaurant", "Food & Drink"),
+    CAFE("Cafe", "Food & Drink"),
+    BAKER("Bakery", "Food & Drink"),
+    PARK("Park", "Outdoors"),
+    MUSEUM("Museum", "Culture"),
+    SHOPPING_MALL("Shopping Mall", "Shops"),
+    BAR("Bar", "Food & Drink"),
+    LIBRARY("Library", "Culture"),
+    BOOK_STORE("Book Store", "Shops"),
+    CLOTHING_STORE("Clothing Store", "Shops"),
+    PET_STORE("Pet Store", "Shops"),
+    SHOE_STORE("Shoe Store", "Shops"),
+    FLORIST("Florist", "Shops"),
+    MOVIE_THEATER("Movie Theater", "Entertainment"),
+    NIGHT_CLUB("Night Club", "Entertainment"),
+    ZOO("Zoo", "Outdoors"),
+    AQUARIUM("Aquarium", "Outdoors"),
+    AMUSEMENT_PARK("Amusement Park", "Entertainment"),
+    TOURIST_ATTRACTION("Tourist Attraction", "Culture"),
+    ART_GALLERY("Art Gallery", "Culture"),
+    BEACH("Beach", "Outdoors"),
+    SPA("Spa", "Wellness");
 
     companion object {
-        // Helper function to get enum from display name
-        fun fromDisplayName(name: String): PlaceType? {
-            return entries.find { it.displayName == name }
+        // Get a list of all categories
+        fun categories(): List<String> {
+            return entries.map { it.category }.distinct()
         }
 
-        // List of all display names (for UI usage)
-        val displayNames: List<String>
-            get() = entries.map { it.displayName }
+        // Get PlaceTypes by category
+        fun getByCategory(category: String): List<PlaceType> {
+            return entries.filter { it.category == category }
+        }
     }
 }
