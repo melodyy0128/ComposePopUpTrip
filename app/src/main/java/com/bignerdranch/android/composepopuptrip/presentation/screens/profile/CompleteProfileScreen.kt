@@ -1,5 +1,6 @@
 package com.bignerdranch.android.composepopuptrip.presentation.screens.profile
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,8 @@ import com.bignerdranch.android.composepopuptrip.presentation.components.AppButt
 import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTitle
 import com.bignerdranch.android.composepopuptrip.presentation.components.ProfilePlaceTypeSelector
 
+private const val TAG = "CompleteProfileScreen"
+
 @Composable
 fun CompleteProfileScreen(
     email: String,
@@ -33,12 +36,14 @@ fun CompleteProfileScreen(
 ) {
 
     val usernameInput by viewModel.username.collectAsState()
-    val selectedPlaceTypes by viewModel.placeTypes.collectAsState()
+    val selectedPlaceTypes by viewModel.selectedPlaceTypes.collectAsState()
     val navigateToHome by viewModel.navigateToHome.collectAsState()
 
     var inputText by remember { mutableStateOf(usernameInput) }
 
     val placeTypesByCategory = PlaceType.entries.groupBy { it.category }
+    // Log the placeTypesByCategory
+     Log.d(TAG, "CompleteProfileScreen: placeTypesByCategory: $placeTypesByCategory")
 
     LaunchedEffect(navigateToHome) {
         if (navigateToHome) {
@@ -95,7 +100,7 @@ fun CompleteProfileScreen(
                     )
 
                     ProfilePlaceTypeSelector(
-                        placeTypes = placeTypes.map { it.displayName },
+                        placeTypes = placeTypes,
                         selectedTypes = selectedPlaceTypes,
                         onSelectionChanged = { updatedTypes ->
                             viewModel.updatePlaceTypes(updatedTypes)

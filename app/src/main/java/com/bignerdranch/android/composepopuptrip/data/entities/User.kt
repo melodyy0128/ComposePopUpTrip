@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey val email: String,
     @ColumnInfo val username: String?,
-    @ColumnInfo(name = "place_types") val placeTypes: List<String>
+    @ColumnInfo val placeTypes: List<PlaceType>
 )

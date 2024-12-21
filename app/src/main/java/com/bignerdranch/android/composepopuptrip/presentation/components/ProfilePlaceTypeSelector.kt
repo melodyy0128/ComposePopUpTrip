@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.bignerdranch.android.composepopuptrip.data.entities.PlaceType
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfilePlaceTypeSelector(
-    placeTypes: List<String>,
-    selectedTypes: List<String>,
-    onSelectionChanged: (List<String>) -> Unit,
+    placeTypes: List<PlaceType>,
+    selectedTypes: List<PlaceType>,
+    onSelectionChanged: (List<PlaceType>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -39,7 +39,7 @@ fun ProfilePlaceTypeSelector(
                 },
                 label = {
                     Text(
-                        text = type,
+                        text = type.displayName,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
                     )

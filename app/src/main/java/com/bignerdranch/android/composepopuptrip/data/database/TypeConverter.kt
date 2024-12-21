@@ -1,15 +1,16 @@
 package com.bignerdranch.android.composepopuptrip.data.database
 
 import androidx.room.TypeConverter
+import com.bignerdranch.android.composepopuptrip.data.entities.PlaceType
 
 class Converters {
     @TypeConverter
-    fun fromPlaceTypesList(placeTypes: List<String>): String {
-        return placeTypes.joinToString(",") // Convert list to comma-separated string
+    fun fromPlaceTypeList(placeTypes: List<PlaceType>?): String? {
+        return placeTypes?.joinToString(",") { it.name }
     }
 
     @TypeConverter
-    fun toPlaceTypesList(data: String): List<String> {
-        return if (data.isEmpty()) emptyList() else data.split(",") // Convert string back to list
+    fun toPlaceTypeList(data: String?): List<PlaceType>? {
+        return data?.split(",")?.map { PlaceType.valueOf(it) }
     }
 }

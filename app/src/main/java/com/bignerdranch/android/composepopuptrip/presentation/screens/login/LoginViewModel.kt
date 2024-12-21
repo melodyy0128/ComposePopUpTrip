@@ -59,8 +59,11 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 auth.signInWithEmailAndPassword(_email.value, _password.value)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            Log.d(TAG, "performLogin: Login successful")
                             viewModelScope.launch {
+                                Log.d(TAG, "performLogin: Getting user from repository by email: ${_email.value}")
                                 val user = repository.getUserByEmail(_email.value)
+                                Log.d(TAG, "performLogin: User: $user")
                                 _navigateToCompleteProfile.value = user == null
                                 _loginSuccess.value = true
                             }

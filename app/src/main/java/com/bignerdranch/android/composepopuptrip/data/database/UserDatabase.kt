@@ -8,7 +8,7 @@ import com.bignerdranch.android.composepopuptrip.data.entities.User
 
 @Database(
     entities = [User::class],
-    version = 2
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class UserDatabase: RoomDatabase() {
