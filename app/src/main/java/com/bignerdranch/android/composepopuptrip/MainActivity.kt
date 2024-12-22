@@ -27,21 +27,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val placesClient = Places.createClient(this)
+//        val db = Room.databaseBuilder(
+//            applicationContext,
+//            UserDatabase::class.java, "user_database"
+//        )
+//            // clean database on schema change
+//            .fallbackToDestructiveMigration()
+//            .build()
 
-        // Create Repository and ViewModel
-        val placesRepository = GooglePlacesRepository(placesClient)
-
-        val db = Room.databaseBuilder(
-            applicationContext,
-            UserDatabase::class.java, "user_database"
-        )
-            // clean database on schema change
-            .fallbackToDestructiveMigration()
-            .build()
+        val db by lazy {
+            Room.databaseBuilder(
+                applicationContext,
+                UserDatabase::class.java, "user_database"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+        }
 
         val userRepository = UserRepository(db.userDao())
         val authRepository = AuthRepository()
+        val placesClient = Places.createClient(this)
+        val placesRepository = GooglePlacesRepository(placesClient)
 
         val sharedViewModel: SharedViewModel by viewModels()
         val loginViewModel = LoginViewModel(userRepository, authRepository)

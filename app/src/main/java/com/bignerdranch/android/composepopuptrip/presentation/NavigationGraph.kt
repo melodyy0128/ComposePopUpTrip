@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -31,9 +32,9 @@ import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.Pr
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedPlacesScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedRoutesScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedScreen
-import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.SettingsScreen
+import com.bignerdranch.android.composepopuptrip.presentation.screens.settings.SettingsScreen
 
-//private const val TAG = ""
+private const val TAG = "NavigationGraph"
 
 fun shouldShowBottomNav(currentRoute: String?): Boolean {
     return currentRoute in listOf(
@@ -59,7 +60,8 @@ fun NavigationGraph(
     val bottomNavItems = listOf(
         BottomNavItem("Home", "home", Icons.Filled.Home),
         BottomNavItem("Saved", "saved", Icons.Filled.Star),
-        BottomNavItem("Profile", "profile", Icons.Filled.AccountCircle)
+        BottomNavItem("Profile", "profile", Icons.Filled.AccountCircle),
+        BottomNavItem("Settings", "settings", Icons.Filled.Settings)
     )
 
     Scaffold(
