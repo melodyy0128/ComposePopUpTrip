@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.bignerdranch.android.composepopuptrip.data.database.DatabaseProvider
 import com.bignerdranch.android.composepopuptrip.data.database.UserDatabase
+import com.bignerdranch.android.composepopuptrip.data.repository.AuthRepository
 import com.bignerdranch.android.composepopuptrip.data.repository.GooglePlacesRepository
 import com.bignerdranch.android.composepopuptrip.data.repository.UserRepository
 import com.bignerdranch.android.composepopuptrip.presentation.NavigationGraph
@@ -38,13 +39,15 @@ class MainActivity : ComponentActivity() {
             // clean database on schema change
             .fallbackToDestructiveMigration()
             .build()
-        val repository = UserRepository(db.userDao())
+
+        val userRepository = UserRepository(db.userDao())
+        val authRepository = AuthRepository()
 
         val sharedViewModel: SharedViewModel by viewModels()
-        val loginViewModel = LoginViewModel(repository)
+        val loginViewModel = LoginViewModel(userRepository, authRepository)
         val homeViewModel = HomeViewModel(placesRepository)
-        val completeProfileViewModel = CompleteProfileViewModel(repository)
-        val profileViewModel = ProfileViewModel(repository)
+        val completeProfileViewModel = CompleteProfileViewModel(userRepository)
+        val profileViewModel = ProfileViewModel(userRepository)
 
         setContent {
             ComposePopUpTripTheme {

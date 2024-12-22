@@ -1,5 +1,6 @@
 package com.bignerdranch.android.composepopuptrip.presentation.screens.profile
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -30,6 +32,8 @@ import com.bignerdranch.android.composepopuptrip.data.entities.User
 import com.bignerdranch.android.composepopuptrip.presentation.SharedViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.components.ProfilePlaceTypeSelector
 
+private const val TAG = "ProfileScreen"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -39,14 +43,22 @@ fun ProfileScreen(
     val userState by viewModel.user.collectAsState()
     val email by sharedViewModel.email.collectAsState()
     val allPlaceTypes = PlaceType.entries.groupBy { it.category }
-    val categorizedPlaceTypes by viewModel.categorizedPlaceTypes.collectAsState()
+//    val categorizedPlaceTypes by viewModel.categorizedPlaceTypes.collectAsState()
     var isEditing by remember { mutableStateOf(false) }
     var updatedUsername by remember { mutableStateOf("") }
     var updatedPlaceTypes by remember { mutableStateOf<List<PlaceType>>(emptyList()) }
+    val errorMessage by viewModel.errorMessage.collectAsState()
 
     LaunchedEffect(email) {
         email?.let {
             viewModel.fetchUser(it)
+        }
+    }
+
+    LaunchedEffect(userState) {
+        userState?.let { user ->
+            updatedPlaceTypes = user.placeTypes
+            updatedUsername = user.username ?: ""
         }
     }
 
@@ -58,15 +70,25 @@ fun ProfileScreen(
                     TextButton(
                         onClick = {
                             if (isEditing) {
+                                // Trigger ViewModel validation and updates
                                 viewModel.updateUserProfile(
-                                    email = email!!,
+                                    email = email ?: "",
                                     username = updatedUsername,
                                     placeTypes = updatedPlaceTypes
                                 )
+
+                                // Check for errors; only exit editing mode if no errors
+                                if (viewModel.errorMessage.value.isNullOrEmpty()) {
+                                    isEditing = false
+                                }
+                            } else {
+                                // Enter editing mode
+                                isEditing = true
+                                viewModel.clearErrorMessage() // Clear any previous error messages
                             }
-                            isEditing = !isEditing
                         }
                     ) {
+                        // Button text depends on `isEditing`, but `isEditing` changes only after validation
                         Text(if (isEditing) "DONE" else "EDIT")
                     }
                 }
@@ -84,12 +106,13 @@ fun ProfileScreen(
             } else {
                 ProfileContent(
                     user = userState!!,
-                    categorizedPlaceTypes = allPlaceTypes,
+                    allPlaceTypes = allPlaceTypes,
                     isEditing = isEditing,
                     updatedUsername = updatedUsername,
                     updatedPlaceTypes = updatedPlaceTypes,
                     onUsernameChange = { updatedUsername = it },
-                    onPlaceTypesChange = { updatedPlaceTypes = it }
+                    onPlaceTypesChange = { updatedPlaceTypes = it },
+                    errorMessage = errorMessage
                 )
             }
         }
@@ -99,18 +122,27 @@ fun ProfileScreen(
 @Composable
 fun ProfileContent(
     user: User,
-    categorizedPlaceTypes: Map<String, List<PlaceType>>,
+    allPlaceTypes: Map<String, List<PlaceType>>,
     isEditing: Boolean,
     updatedUsername: String,
     updatedPlaceTypes: List<PlaceType>,
     onUsernameChange: (String) -> Unit,
-    onPlaceTypesChange: (List<PlaceType>) -> Unit
+    onPlaceTypesChange: (List<PlaceType>) -> Unit,
+    errorMessage: String?
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(16.dp)
     ) {
+
+        TextField(
+            value = user.email,
+            onValueChange = {},
+            label = { Text("Email") },
+            enabled = false,
+            modifier = Modifier.fillMaxWidth()
+        )
 
         if (isEditing) {
             TextField(
@@ -120,26 +152,22 @@ fun ProfileContent(
                 modifier = Modifier.fillMaxWidth()
             )
         } else {
-            Text(
-                text = "Username: ${user.username ?: "User"}",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+            TextField(
+                value = user.username ?: "User",
+                onValueChange = {},
+                label = { Text("Username") },
+                enabled = false,
+                modifier = Modifier.fillMaxWidth()
             )
         }
 
-        Text(
-            text = "Email: ${user.email}",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium
-        )
-
-        categorizedPlaceTypes.forEach { (category, placeTypes) ->
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        allPlaceTypes.forEach { (category, placeTypes) ->
+            Column {
                 Text(
                     text = category,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp)
                 )
                 ProfilePlaceTypeSelector(
                     placeTypes = placeTypes,
@@ -151,5 +179,14 @@ fun ProfileContent(
                 )
             }
         }
+
+        errorMessage?.let { message ->
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+
     }
 }

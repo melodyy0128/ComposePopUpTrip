@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bignerdranch.android.composepopuptrip.data.DaoObjects.UserDao
 import com.bignerdranch.android.composepopuptrip.data.entities.User
+import com.bignerdranch.android.composepopuptrip.data.repository.AuthRepository
 import com.bignerdranch.android.composepopuptrip.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,10 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "LoginViewModel"
 
-class LoginViewModel(private val repository: UserRepository) : ViewModel() {
+class LoginViewModel(
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -56,21 +60,15 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     fun performLogin() {
         if (_email.value.isNotEmpty() && _password.value.isNotEmpty()) {
             viewModelScope.launch {
-                auth.signInWithEmailAndPassword(_email.value, _password.value)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "performLogin: Login successful")
-                            viewModelScope.launch {
-                                Log.d(TAG, "performLogin: Getting user from repository by email: ${_email.value}")
-                                val user = repository.getUserByEmail(_email.value)
-                                Log.d(TAG, "performLogin: User: $user")
-                                _navigateToCompleteProfile.value = user == null
-                                _loginSuccess.value = true
-                            }
-                        } else {
-                            _errorMessage.value = "Login failed. Please try again."
-                        }
-                    }
+                val loginSuccess = authRepository.loginWithEmailAndPassword(_email.value, _password.value)
+                if (loginSuccess) {
+                    Log.d(TAG, "performLogin: Login successful")
+                    val user = userRepository.getUserByEmail(_email.value)
+                    _navigateToCompleteProfile.value = user == null
+                    _loginSuccess.value = true
+                } else {
+                    _errorMessage.value = "Login failed. Please try again."
+                }
             }
         } else {
             _errorMessage.value = "Email and Password cannot be empty"
