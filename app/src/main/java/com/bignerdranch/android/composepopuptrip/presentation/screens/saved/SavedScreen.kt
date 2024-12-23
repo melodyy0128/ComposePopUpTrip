@@ -24,14 +24,14 @@ fun SavedScreen(navController: NavController, viewModel: SavedViewModel = viewMo
 
     LaunchedEffect(navigateToSavedPlaces) {
         if (navigateToSavedPlaces) {
-            navController.navigate("savedPlaces")
+            navController.navigate("saved/savedPlaces")
             viewModel.onNavigateToSavedPlacesComplete()
         }
     }
 
     LaunchedEffect(navigateToSavedRoutes) {
         if (navigateToSavedRoutes) {
-            navController.navigate("savedRoutes")
+            navController.navigate("saved/savedRoutes")
             viewModel.onNavigateToSavedRoutesComplete()
         }
     }

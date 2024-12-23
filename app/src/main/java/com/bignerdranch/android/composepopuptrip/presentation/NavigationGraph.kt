@@ -38,14 +38,10 @@ import com.bignerdranch.android.composepopuptrip.presentation.screens.settings.S
 private const val TAG = "NavigationGraph"
 
 fun shouldShowBottomNav(currentRoute: String?): Boolean {
-    return currentRoute in listOf(
-        "home",
-        "saved",
-        "profile",
-        "settings",
-        "savedPlaces",
-        "savedRoutes"
-    ) || currentRoute?.startsWith("routeMap/") == true
+    return currentRoute?.startsWith("home") == true
+            || currentRoute?.startsWith("saved") == true
+            || currentRoute?.startsWith("profile") == true
+            || currentRoute?.startsWith("settings") == true
 }
 
 @Composable
@@ -109,7 +105,7 @@ fun NavigationGraph(
             }
 
             composable(
-                route = "routeMap/{startAddress}/{destinationAddress}",
+                route = "home/routeMap/{startAddress}/{destinationAddress}",
                 arguments = listOf(
                     navArgument("startAddress") { type = NavType.StringType },
                     navArgument("destinationAddress") { type = NavType.StringType }
@@ -123,6 +119,18 @@ fun NavigationGraph(
 
             composable("saved") {
                 SavedScreen(navController = navController)
+            }
+
+            composable("saved/savedPlaces") {
+                SavedPlacesScreen(
+                    onBackClick = { navController.popBackStack() }
+                )
+            }
+
+            composable("saved/savedRoutes") {
+                SavedRoutesScreen(
+                    onBackClick = { navController.popBackStack() }
+                )
             }
 
             composable(
@@ -146,16 +154,6 @@ fun NavigationGraph(
                     viewModel = settingsViewModel,
                     navController = navController
                 )
-            }
-
-            composable("savedPlaces") {
-                SavedPlacesScreen(
-                    onBackClick = { navController.popBackStack() }
-                )
-            }
-
-            composable("savedRoutes") {
-                SavedRoutesScreen()
             }
         }
     }

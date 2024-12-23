@@ -33,7 +33,7 @@ fun BottomNavigationBar(
         modifier = modifier
     ) {
         items.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
+            val selected = backStackEntry.value?.destination?.route?.startsWith(item.route) == true
             NavigationBarItem(
                 selected = selected,
                 onClick = { onItemClick(item) },

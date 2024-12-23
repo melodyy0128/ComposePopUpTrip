@@ -58,7 +58,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
 
         ActivateBtn(
             onClick = {
-                navController.navigate("routeMap/${startQuery.trim()}/${destinationQuery.trim()}")
+                navController.navigate("home/routeMap/${startQuery.trim()}/${destinationQuery.trim()}")
             },
             buttonText = "NEXT",
             enabled = isBtnEnabled
