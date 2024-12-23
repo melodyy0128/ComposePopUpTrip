@@ -44,7 +44,10 @@ class ProfileViewModel(
     }
 
     fun updateUserProfile(email: String, username: String, placeTypes: List<PlaceType>) {
-        if(username.isEmpty()) {
+        if(username.isEmpty() && placeTypes.isEmpty()) {
+            _errorMessage.value = "Username and place preferences cannot be empty"
+            return
+        } else if(username.isEmpty()) {
             _errorMessage.value = "Username cannot be empty"
             return
         } else if(placeTypes.isEmpty()) {
@@ -54,7 +57,8 @@ class ProfileViewModel(
 
         viewModelScope.launch {
             repository.updateUser(email, username, placeTypes)
-            fetchUser(email) // Refresh the user data
+            fetchUser(email)
+            _errorMessage.value = null
         }
     }
 }

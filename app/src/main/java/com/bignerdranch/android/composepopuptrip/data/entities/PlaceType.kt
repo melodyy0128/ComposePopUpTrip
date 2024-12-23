@@ -21,8 +21,7 @@ enum class PlaceType(val displayName: String, val category: String) {
     AMUSEMENT_PARK("Amusement Park", "Entertainment"),
     TOURIST_ATTRACTION("Tourist Attraction", "Culture"),
     ART_GALLERY("Art Gallery", "Culture"),
-    BEACH("Beach", "Outdoors"),
-    SPA("Spa", "Wellness");
+    BEACH("Beach", "Outdoors");
 
     companion object {
         // Get a list of all categories

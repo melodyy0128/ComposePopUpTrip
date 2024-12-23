@@ -7,9 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +51,7 @@ fun ProfileScreen(
     var updatedUsername by remember { mutableStateOf("") }
     var updatedPlaceTypes by remember { mutableStateOf<List<PlaceType>>(emptyList()) }
     val errorMessage by viewModel.errorMessage.collectAsState()
+    var showErrorDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(email) {
         email?.let {
@@ -60,6 +64,10 @@ fun ProfileScreen(
             updatedPlaceTypes = user.placeTypes
             updatedUsername = user.username ?: ""
         }
+    }
+
+    LaunchedEffect(errorMessage) {
+        showErrorDialog = !errorMessage.isNullOrEmpty()
     }
 
     Scaffold(
@@ -117,6 +125,19 @@ fun ProfileScreen(
             }
         }
     }
+
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("Error") },
+            text = { Text(errorMessage ?: "An unexpected error occurred.") },
+            confirmButton = {
+                TextButton(onClick = { showErrorDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -161,13 +182,25 @@ fun ProfileContent(
             )
         }
 
+//        errorMessage?.let { message ->
+//            Text(
+//                text = message,
+//                color = MaterialTheme.colorScheme.error,
+//                modifier = Modifier.padding(top = 4.dp)
+//            )
+//        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
         allPlaceTypes.forEach { (category, placeTypes) ->
-            Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.padding(bottom = 4.dp)
+            ) {
                 Text(
                     text = category,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 4.dp)
+                    fontWeight = FontWeight.Bold
                 )
                 ProfilePlaceTypeSelector(
                     placeTypes = placeTypes,
@@ -175,17 +208,10 @@ fun ProfileContent(
                     onSelectionChanged = {
                         if (isEditing) onPlaceTypesChange(it)
                     },
+                    isEditing = isEditing,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-
-        errorMessage?.let { message ->
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(top = 4.dp)
-            )
         }
 
     }

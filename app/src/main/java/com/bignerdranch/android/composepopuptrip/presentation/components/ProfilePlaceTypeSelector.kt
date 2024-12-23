@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ fun ProfilePlaceTypeSelector(
     placeTypes: List<PlaceType>,
     selectedTypes: List<PlaceType>,
     onSelectionChanged: (List<PlaceType>) -> Unit,
+    isEditing: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -29,13 +32,15 @@ fun ProfilePlaceTypeSelector(
             FilterChip(
                 selected = isSelected,
                 onClick = {
-                    val updatedTypes = selectedTypes.toMutableList()
-                    if (isSelected) {
-                        updatedTypes.remove(type)
-                    } else {
-                        updatedTypes.add(type)
+                    if (isEditing) {
+                        val updatedTypes = selectedTypes.toMutableList()
+                        if (isSelected) {
+                            updatedTypes.remove(type)
+                        } else {
+                            updatedTypes.add(type)
+                        }
+                        onSelectionChanged(updatedTypes)
                     }
-                    onSelectionChanged(updatedTypes)
                 },
                 label = {
                     Text(
@@ -44,6 +49,12 @@ fun ProfilePlaceTypeSelector(
                         fontWeight = FontWeight.Medium
                     )
                 },
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    selectedContainerColor = if (isEditing) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                    selectedLabelColor = if (isEditing) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                    ),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
