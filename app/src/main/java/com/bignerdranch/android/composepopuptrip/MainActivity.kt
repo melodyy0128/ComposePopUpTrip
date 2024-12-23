@@ -20,6 +20,7 @@ import com.bignerdranch.android.composepopuptrip.presentation.screens.home.HomeV
 import com.bignerdranch.android.composepopuptrip.presentation.screens.login.LoginViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.CompleteProfileViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.screens.profile.ProfileViewModel
+import com.bignerdranch.android.composepopuptrip.presentation.screens.settings.SettingsViewModel
 import com.bignerdranch.android.composepopuptrip.presentation.theme.ComposePopUpTripTheme
 import com.google.android.libraries.places.api.Places
 import kotlinx.coroutines.launch
@@ -51,6 +52,7 @@ class MainActivity : ComponentActivity() {
             val homeViewModel = HomeViewModel(placesRepository)
             val completeProfileViewModel = CompleteProfileViewModel(userRepository)
             val profileViewModel = ProfileViewModel(userRepository)
+            val settingsViewModel = SettingsViewModel()
 
             setContent {
                 ComposePopUpTripTheme {
@@ -59,7 +61,8 @@ class MainActivity : ComponentActivity() {
                         loginViewModel = loginViewModel,
                         homeViewModel = homeViewModel,
                         completeProfileViewModel = completeProfileViewModel,
-                        profileViewModel = profileViewModel
+                        profileViewModel = profileViewModel,
+                        settingsViewModel = settingsViewModel
                     )
                 }
             }

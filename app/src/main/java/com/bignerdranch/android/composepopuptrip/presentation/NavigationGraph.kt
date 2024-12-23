@@ -33,6 +33,7 @@ import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.Save
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedRoutesScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.saved.SavedScreen
 import com.bignerdranch.android.composepopuptrip.presentation.screens.settings.SettingsScreen
+import com.bignerdranch.android.composepopuptrip.presentation.screens.settings.SettingsViewModel
 
 private const val TAG = "NavigationGraph"
 
@@ -53,7 +54,8 @@ fun NavigationGraph(
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     completeProfileViewModel: CompleteProfileViewModel,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
+    settingsViewModel: SettingsViewModel
 ) {
     val navController = rememberNavController()
 
@@ -141,7 +143,8 @@ fun NavigationGraph(
 
             composable("settings") {
                 SettingsScreen(
-
+                    viewModel = settingsViewModel,
+                    navController = navController
                 )
             }
 
