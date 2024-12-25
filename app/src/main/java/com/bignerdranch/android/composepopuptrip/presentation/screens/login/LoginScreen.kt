@@ -39,16 +39,20 @@ fun LoginScreen(
     LaunchedEffect(loginSuccess) {
         if (navigateToCompleteProfile) {
             loginViewModel.resetNavigationState()
-            sharedViewModel.setEmail(email.trim())
-            Log.d(TAG, "LoginScreen: navigateToCompleteProfile: $email")
-            navController.navigate("completeProfile/${email.trim()}")
-            Log.d(TAG, "LoginScreen: navigateToCompleteProfile COMPLETED")
-        } else if (loginSuccess) {
             loginViewModel.resetLoginState()
             sharedViewModel.setEmail(email.trim())
-            Log.d(TAG, "LoginScreen: navigateToHome: $email")
+//            Log.d(TAG, "LoginScreen: navigateToCompleteProfile: $email")
+            navController.navigate("completeProfile/${email.trim()}")
+            loginViewModel.clearInputs()
+//            Log.d(TAG, "LoginScreen: navigateToCompleteProfile COMPLETED")
+        } else if (loginSuccess) {
+            loginViewModel.resetNavigationState()
+            loginViewModel.resetLoginState()
+            sharedViewModel.setEmail(email.trim())
+//            Log.d(TAG, "LoginScreen: navigateToHome: $email")
             navController.navigate("home")
-            Log.d(TAG, "LoginScreen: navigateToHome COMPLETED")
+            loginViewModel.clearInputs()
+//            Log.d(TAG, "LoginScreen: navigateToHome COMPLETED")
         }
     }
 

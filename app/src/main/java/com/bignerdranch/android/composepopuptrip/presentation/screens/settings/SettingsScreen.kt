@@ -12,6 +12,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -26,6 +29,16 @@ fun SettingsScreen(
     viewModel: SettingsViewModel,
     navController: NavController
 ) {
+
+    val navigateToSignIn by viewModel.navigateToSignIn.collectAsState()
+
+    LaunchedEffect(navigateToSignIn) {
+        if (navigateToSignIn) {
+            navController.navigate("login")
+            viewModel.navigateToSignInComplete()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Settings") })
@@ -53,12 +66,6 @@ fun SettingsScreen(
                 onCheckedChange = { }
             )
 
-            // Privacy Policy
-            SettingsClickableItem(
-                title = "Privacy Policy",
-                onClick = {}
-            )
-
             // Language Selector
             SettingsDropdown(
                 title = "Language",
@@ -75,11 +82,17 @@ fun SettingsScreen(
                 onValueChange = { }
             )
 
+            // Privacy Policy
+            SettingsClickableItem(
+                title = "Privacy Policy",
+                onClick = {}
+            )
+
             Spacer(modifier = Modifier.weight(1f))
 
             // Log Out Button
             Button(
-                onClick = { },
+                onClick = { viewModel.navigateToSignIn() },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Log Out")

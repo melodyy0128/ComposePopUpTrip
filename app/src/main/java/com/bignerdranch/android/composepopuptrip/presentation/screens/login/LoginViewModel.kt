@@ -19,8 +19,6 @@ class LoginViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> get() = _email
 
@@ -96,5 +94,10 @@ class LoginViewModel(
     fun resetLoginState() {
         _loginSuccess.value = false
         _errorMessage.value = null
+    }
+
+    fun clearInputs() {
+        _email.value = ""
+        _password.value = ""
     }
 }
