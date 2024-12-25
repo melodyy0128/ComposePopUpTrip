@@ -74,14 +74,6 @@ fun SettingsScreen(
                 onItemSelected = { }
             )
 
-            // Search Range
-            SettingsSlider(
-                title = "Search Range",
-                value = 10f,
-                valueRange = 1f..50f,
-                onValueChange = { }
-            )
-
             // Privacy Policy
             SettingsClickableItem(
                 title = "Privacy Policy",

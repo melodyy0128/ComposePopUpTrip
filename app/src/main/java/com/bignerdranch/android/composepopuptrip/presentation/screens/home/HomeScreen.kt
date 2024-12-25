@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.bignerdranch.android.composepopuptrip.presentation.components.ActivateBtn
 import com.bignerdranch.android.composepopuptrip.presentation.components.DropdownSearchBar
 import com.bignerdranch.android.composepopuptrip.presentation.components.LoginTitle
+import com.bignerdranch.android.composepopuptrip.presentation.components.SettingsSlider
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
@@ -55,6 +56,19 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
         )
 
         Spacer(modifier = Modifier.height(8.dp))
+
+        // Search Range
+        SettingsSlider(
+            title = "Search Range",
+            value = 10f,
+            valueRange = 1f..50f,
+            onValueChange = { },
+            modifier = Modifier
+                .fillMaxWidth() // Ensures slider stretches across the width
+                .padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         ActivateBtn(
             onClick = {
