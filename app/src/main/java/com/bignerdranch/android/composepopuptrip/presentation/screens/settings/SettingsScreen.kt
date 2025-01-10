@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bignerdranch.android.composepopuptrip.presentation.components.SettingsClickableItem
 import com.bignerdranch.android.composepopuptrip.presentation.components.SettingsDropdown
-import com.bignerdranch.android.composepopuptrip.presentation.components.SettingsSlider
 import com.bignerdranch.android.composepopuptrip.presentation.components.SettingsToggle
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +48,7 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp), // Consistent horizontal padding
-            verticalArrangement = Arrangement.spacedBy(24.dp) // Even spacing between sections
+            verticalArrangement = Arrangement.spacedBy(16.dp) // Even spacing between sections
         ) {
 
             // Push Notifications
@@ -85,7 +84,9 @@ fun SettingsScreen(
             // Log Out Button
             Button(
                 onClick = { viewModel.navigateToSignIn() },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
             ) {
                 Text("Log Out")
             }
